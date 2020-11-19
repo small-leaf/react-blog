@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, { useContext } from "react";
 import { AuthContext } from "../../contexts";
 import { setAuthToken } from "../../utils";
-
 import { Link, useLocation, useHistory } from "react-router-dom";
 
 const HeaderContainer = styled.div`
@@ -20,9 +19,11 @@ const HeaderContainer = styled.div`
   background: white;
 `;
 
-const Brand = styled.div`
+const Brand = styled(Link)`
   font-size: 32px;
   font-weight: bold;
+  color: rgba(0, 0, 0, 0.6);
+  text-decoration: none;
 `;
 
 const NavbarList = styled.div`
@@ -47,9 +48,9 @@ const Nav = styled(Link)`
 const LeftContainer = styled.div`
   display: flex;
   align-items: center;
-
+  justify-content: center;
   ${NavbarList} {
-    margin-left: 64px;
+    margin-left: 30px;
   }
 `;
 
@@ -57,6 +58,7 @@ function Header() {
   const { user, setUser } = useContext(AuthContext);
   const location = useLocation();
   const history = useHistory();
+
   const handleLogout = () => {
     setAuthToken("");
     setUser(null);
@@ -67,22 +69,33 @@ function Header() {
   return (
     <HeaderContainer>
       <LeftContainer>
-        <Brand>部落格</Brand>
+        <Brand to="/">Blog</Brand>
         <NavbarList>
           <Nav to="/" $active={location.pathname === "/"}>
             首頁
           </Nav>
-          {user && (
-            <Nav to="/new-post" $active={location.pathname === "/new-post"}>
-              發布文章
-            </Nav>
-          )}
+          <Nav to="/post-list" $active={location.pathname === "/post-list"}>
+            文章列表
+          </Nav>
+          <Nav to="/about-me" $active={location.pathname === "/about-me"}>
+            關於我
+          </Nav>
         </NavbarList>
       </LeftContainer>
       <NavbarList>
         {!user && (
-          <Nav to="/login" $active={location.pathname === "/login"}>
-            登入
+          <>
+            <Nav to="/login" $active={location.pathname === "/login"}>
+              登入
+            </Nav>
+            <Nav to="/register" $active={location.pathname === "/register"}>
+              註冊
+            </Nav>
+          </>
+        )}
+        {user && (
+          <Nav to="/new-post" $active={location.pathname === "/new-post"}>
+            發布文章
           </Nav>
         )}
         {user && <Nav onClick={handleLogout}>登出</Nav>}
