@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { getPosts } from "../../WebAPI";
 import { Link } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 
 const Root = styled.div`
   width: 80%;
@@ -48,9 +49,11 @@ const HomePage = () => {
 
   return (
     <Root>
-      {posts.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      {posts.length > 0 ? (
+        posts.map((post) => <Post key={post.id} post={post} />)
+      ) : (
+        <Spinner />
+      )}
     </Root>
   );
 };

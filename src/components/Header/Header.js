@@ -17,6 +17,7 @@ const HeaderContainer = styled.div`
   padding: 0 32px;
   box-sizing: border-box;
   background: white;
+  z-index: 2;
 `;
 
 const Brand = styled(Link)`

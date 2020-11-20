@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { getPosts, getPaginationPost } from "../../WebAPI";
 import { pagination } from "../../utils";
 import { Link } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 
 const Root = styled.div`
   width: 80%;
@@ -96,27 +97,34 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    console.log("render effect");
     getPosts().then((posts) => {
       const totalPage = Math.ceil(posts.length / 5);
-      console.log(totalPage);
+      //console.log(totalPage);
       setPages(pagination(totalPage));
-      console.log(pagination(totalPage));
+      //console.log(pagination(totalPage));
       getPaginationPost(1).then((post) => setPosts(post));
     });
   }, []);
 
   return (
     <Root>
-      {posts && posts.map((post) => <Post key={post.id} post={post} />)}
-      <PageContainer>
-        {posts &&
-          pages.map((page) => (
-            <PageBtn key={page} onClick={handleButtonClick(page)}>
-              {page}
-            </PageBtn>
+      {posts.length > 0 ? (
+        <>
+          {posts.map((post) => (
+            <Post key={post.id} post={post} />
           ))}
-      </PageContainer>
+          <PageContainer>
+            {pages &&
+              pages.map((page) => (
+                <PageBtn key={page} onClick={handleButtonClick(page)}>
+                  {page}
+                </PageBtn>
+              ))}
+          </PageContainer>
+        </>
+      ) : (
+        <Spinner />
+      )}
     </Root>
   );
 };

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 const PostContainer = styled.div`
   width: 80%;
-  margin: 20px auto;
+  margin: 50px auto;
   padding: 30px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 `;

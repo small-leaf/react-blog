@@ -63,15 +63,20 @@ const AddPostPage = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [errorMessage, setErrorMessage] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isLoading) return;
+    setIsLoading(true);
     setErrorMessage(null);
     addPost(title, body).then((data) => {
       if (data.ok === 0) {
+        setIsLoading(false);
         return setErrorMessage(data.message);
       }
+      setIsLoading(false);
       history.push("/");
     });
   };

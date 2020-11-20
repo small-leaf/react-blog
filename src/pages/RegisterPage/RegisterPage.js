@@ -56,14 +56,17 @@ const RegisterPage = () => {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, nickname, password);
+    if (isLoading) return;
+    setIsLoading(true);
     setErrorMessage(null);
     register(username, nickname, password).then((data) => {
       if (data.ok === 0) {
+        setIsLoading(false);
         return setErrorMessage(data.message);
       }
       setAuthToken(data.token);
@@ -71,9 +74,11 @@ const RegisterPage = () => {
       getMe().then((res) => {
         if (res.ok === 0) {
           setAuthToken(null);
+          setIsLoading(false);
           return setErrorMessage(res.message);
         }
         setUser(res.data);
+        setIsLoading(false);
         history.push("/");
       });
     });
